@@ -22,6 +22,7 @@ use RoachPHP\Tests\Fixtures\RequestDownloaderMiddleware;
 use RoachPHP\Tests\Fixtures\RequestSpiderMiddleware;
 use RoachPHP\Tests\Fixtures\ResponseDownloaderMiddleware;
 use RoachPHP\Tests\Fixtures\ResponseSpiderMiddleware;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -29,8 +30,8 @@ use RoachPHP\Tests\Fixtures\ResponseSpiderMiddleware;
 final class ConfigurationTest extends TestCase
 {
     /**
-     * @dataProvider overridesProvider
      */
+    #[DataProvider('overridesProvider')]
     public function testMergeWithOverrides(array $overrides, callable $verifyConfig): void
     {
         $originalConfig = $this->makeConfiguration([

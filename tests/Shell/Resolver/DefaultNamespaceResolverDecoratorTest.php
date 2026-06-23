@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use RoachPHP\Shell\Resolver\DefaultNamespaceResolverDecorator;
 use RoachPHP\Shell\Resolver\FakeNamespaceResolver;
 use RoachPHP\Tests\Fixtures\TestSpider;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -31,8 +32,8 @@ final class DefaultNamespaceResolverDecoratorTest extends TestCase
     }
 
     /**
-     * @dataProvider prependNamespaceProvider
      */
+    #[DataProvider('prependNamespaceProvider')]
     public function testPrependsDefaultNamespaceIfPassedClassDoesNotExist(string $spiderName): void
     {
         $result = $this->getResolver()->resolveSpiderNamespace($spiderName);
@@ -54,8 +55,8 @@ final class DefaultNamespaceResolverDecoratorTest extends TestCase
     }
 
     /**
-     * @dataProvider defaultNamespaceProvider
      */
+    #[DataProvider('defaultNamespaceProvider')]
     public function testNormalizesDefaultNamespace(string $nonNormalizedNamespace): void
     {
         $result = $this->getResolver($nonNormalizedNamespace)->resolveSpiderNamespace('TestSpider');
@@ -85,8 +86,8 @@ final class DefaultNamespaceResolverDecoratorTest extends TestCase
     }
 
     /**
-     * @dataProvider spiderNameProvider
      */
+    #[DataProvider('spiderNameProvider')]
     public function testNormalizesProvidedSpiderName(string $nonNormalizedSpiderName): void
     {
         $result = $this->getResolver()->resolveSpiderNamespace($nonNormalizedSpiderName);

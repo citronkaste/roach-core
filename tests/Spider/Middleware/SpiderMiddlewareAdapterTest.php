@@ -25,6 +25,7 @@ use RoachPHP\Spider\Middleware\SpiderMiddlewareAdapter;
 use RoachPHP\Spider\SpiderMiddlewareInterface;
 use RoachPHP\Support\Configurable;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -61,8 +62,8 @@ final class SpiderMiddlewareAdapterTest extends TestCase
     }
 
     /**
-     * @dataProvider itemMiddlewareProvider
      */
+    #[DataProvider('itemMiddlewareProvider')]
     public function testItemMiddlewareImplementation(callable $testCase): void
     {
         $middleware = new class() implements ItemMiddlewareInterface {
@@ -108,8 +109,8 @@ final class SpiderMiddlewareAdapterTest extends TestCase
     }
 
     /**
-     * @dataProvider requestMiddlewareProvider
      */
+    #[DataProvider('requestMiddlewareProvider')]
     public function testRequestMiddlewareImplementation(callable $testCase): void
     {
         $middleware = new class() implements RequestMiddlewareInterface {
@@ -155,8 +156,8 @@ final class SpiderMiddlewareAdapterTest extends TestCase
     }
 
     /**
-     * @dataProvider responseMiddlewareProvider
      */
+    #[DataProvider('responseMiddlewareProvider')]
     public function testResponseMiddlewareImplementation(callable $testCase): void
     {
         $middleware = new class() implements ResponseMiddlewareInterface {

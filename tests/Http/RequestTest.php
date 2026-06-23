@@ -21,12 +21,13 @@ use RoachPHP\Spider\ParseResult;
 use RoachPHP\Support\DroppableInterface;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
 use RoachPHP\Tests\Support\DroppableTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
- * @group http
  *
  * @internal
  */
+    #[Group('http')]
 final class RequestTest extends TestCase
 {
     use InteractsWithRequestsAndResponses;

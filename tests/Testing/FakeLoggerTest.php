@@ -15,17 +15,19 @@ namespace RoachPHP\Tests\Testing;
 
 use PHPUnit\Framework\TestCase;
 use RoachPHP\Testing\FakeLogger;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
- * @group testing
  *
  * @internal
  */
+    #[Group('testing')]
 final class FakeLoggerTest extends TestCase
 {
     /**
-     * @dataProvider logMessageProvider
      */
+    #[DataProvider('logMessageProvider')]
     public function testCheckIfSpecificMessageWasLoggedAtLevel(string $level, string $message, array $context): void
     {
         $logger = new FakeLogger();
@@ -38,8 +40,8 @@ final class FakeLoggerTest extends TestCase
     }
 
     /**
-     * @dataProvider logMessageProvider
      */
+    #[DataProvider('logMessageProvider')]
     public function testCheckIfMessageWasLoggedWithContext(string $level, string $message, array $context): void
     {
         $logger = new FakeLogger();

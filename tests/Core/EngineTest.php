@@ -35,12 +35,13 @@ use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
 use RoachPHP\Testing\FakeLogger;
 use RoachPHP\Tests\IntegrationTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @internal
  *
- * @group integration
  */
+    #[Group('integration')]
 final class EngineTest extends IntegrationTestCase
 {
     use InteractsWithRequestsAndResponses;

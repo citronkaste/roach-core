@@ -19,6 +19,7 @@ use RoachPHP\Http\Response;
 use RoachPHP\Support\DroppableInterface;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
 use RoachPHP\Tests\Support\DroppableTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -38,8 +39,8 @@ final class ResponseTest extends TestCase
     }
 
     /**
-     * @dataProvider responseCodeProvider
      */
+    #[DataProvider('responseCodeProvider')]
     public function testCanRetrieveStatusCodeOfOriginalResponse(int $statusCode): void
     {
         $response = new Response(new \GuzzleHttp\Psr7\Response($statusCode), $this->makeRequest());
@@ -48,8 +49,8 @@ final class ResponseTest extends TestCase
     }
 
     /**
-     * @dataProvider responseBodyProvider
      */
+    #[DataProvider('responseBodyProvider')]
     public function testCanRetrieveHtmlBodyOfOriginalResponse(callable $getBody): void
     {
         $body = '<html lang="en"><body><p>Hello, world!</p></body>';

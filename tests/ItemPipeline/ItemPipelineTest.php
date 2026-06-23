@@ -23,12 +23,13 @@ use RoachPHP\ItemPipeline\ItemPipeline;
 use RoachPHP\ItemPipeline\Processors\ConditionalItemProcessor;
 use RoachPHP\ItemPipeline\Processors\ItemProcessorInterface;
 use RoachPHP\Support\Configurable;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
- * @group items
  *
  * @internal
  */
+    #[Group('items')]
 final class ItemPipelineTest extends TestCase
 {
     private ItemPipeline $pipeline;

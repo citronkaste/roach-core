@@ -18,6 +18,7 @@ use RoachPHP\Events\RequestSending;
 use RoachPHP\Extensions\ExtensionInterface;
 use RoachPHP\Extensions\MaxRequestExtension;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -27,8 +28,8 @@ final class MaxRequestExtensionTest extends ExtensionTestCase
     use InteractsWithRequestsAndResponses;
 
     /**
-     * @dataProvider thresholdProvider
      */
+    #[DataProvider('thresholdProvider')]
     public function testDontDropRequestIfThresholdNotReachedYet(int $threshold): void
     {
         $this->extension->configure(['limit' => $threshold]);
@@ -47,8 +48,8 @@ final class MaxRequestExtensionTest extends ExtensionTestCase
     }
 
     /**
-     * @dataProvider thresholdProvider
      */
+    #[DataProvider('thresholdProvider')]
     public function testDropRequestAfterThresholdWasReached(int $threshold): void
     {
         $this->extension->configure(['limit' => $threshold]);

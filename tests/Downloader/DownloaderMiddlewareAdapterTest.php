@@ -22,6 +22,7 @@ use RoachPHP\Http\Request;
 use RoachPHP\Http\Response;
 use RoachPHP\Support\Configurable;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -53,8 +54,8 @@ final class DownloaderMiddlewareAdapterTest extends TestCase
     }
 
     /**
-     * @dataProvider requestMiddlewareProvider
      */
+    #[DataProvider('requestMiddlewareProvider')]
     public function testRequestMiddlewareImplementation(callable $testCase): void
     {
         $middleware = new class() implements RequestMiddlewareInterface {
@@ -90,8 +91,8 @@ final class DownloaderMiddlewareAdapterTest extends TestCase
     }
 
     /**
-     * @dataProvider responseMiddlewareProvider
      */
+    #[DataProvider('responseMiddlewareProvider')]
     public function testResponseMiddlewareImplementation(callable $testCase): void
     {
         $middleware = new class() implements ResponseMiddlewareInterface {

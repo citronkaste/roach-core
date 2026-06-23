@@ -15,6 +15,7 @@ namespace RoachPHP\Tests\ItemPipeline;
 
 use PHPUnit\Framework\TestCase;
 use RoachPHP\Tests\Fixtures\TestItem;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -67,8 +68,8 @@ final class AbstractItemTest extends TestCase
     }
 
     /**
-     * @dataProvider inaccessiblePropertiesProvider
      */
+    #[DataProvider('inaccessiblePropertiesProvider')]
     public function testThrowsExceptionWhenTryingToSetNonPublicOrNonExistentProperty(string $property): void
     {
         $item = new TestItem(foo: '::old-value-1::', bar: '::old-value-2::');
@@ -79,8 +80,8 @@ final class AbstractItemTest extends TestCase
     }
 
     /**
-     * @dataProvider hasPropertyProvider
      */
+    #[DataProvider('hasPropertyProvider')]
     public function testHasProperty(string $property, bool $expected): void
     {
         $item = new TestItem(foo: '::value-1::', bar: '::value-2::');
@@ -89,8 +90,8 @@ final class AbstractItemTest extends TestCase
     }
 
     /**
-     * @dataProvider hasPropertyProvider
      */
+    #[DataProvider('hasPropertyProvider')]
     public function testOffsetExists(string $property, bool $expected): void
     {
         $item = new TestItem(foo: '::value-1::', bar: '::value-2::');
@@ -154,8 +155,8 @@ final class AbstractItemTest extends TestCase
     }
 
     /**
-     * @dataProvider inaccessiblePropertiesProvider
      */
+    #[DataProvider('inaccessiblePropertiesProvider')]
     public function testOffsetSetThrowsExceptionWhenSettingInaccessibleOrNonExistentProperty(string $property): void
     {
         $item = new TestItem(foo: '::value-1::', bar: '::value-2::');

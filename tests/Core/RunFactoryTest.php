@@ -30,6 +30,7 @@ use RoachPHP\Tests\Fixtures\RequestDownloaderMiddleware;
 use RoachPHP\Tests\Fixtures\RequestSpiderMiddleware;
 use RoachPHP\Tests\Fixtures\ResponseDownloaderMiddleware;
 use RoachPHP\Tests\Fixtures\ResponseSpiderMiddleware;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -200,8 +201,8 @@ final class RunFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider numberProvider
      */
+    #[DataProvider('numberProvider')]
     public function testConfigureConcurrencyWithDefault(int $concurrency): void
     {
         $spider = $this->createSpider(concurrency: $concurrency);
@@ -212,8 +213,8 @@ final class RunFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider numberProvider
      */
+    #[DataProvider('numberProvider')]
     public function testConfigureRequestDelay(int $requestDelay): void
     {
         $spider = $this->createSpider(requestDelay: $requestDelay);
@@ -244,8 +245,8 @@ final class RunFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider configurationOverrideProvider
      */
+    #[DataProvider('configurationOverrideProvider')]
     public function testMergeSpiderConfigurationWithRunOverrides(array $overrides, callable $verifyRun): void
     {
         $defaults = [

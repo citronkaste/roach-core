@@ -16,13 +16,14 @@ namespace RoachPHP\Tests\Downloader\Middleware;
 use PHPUnit\Framework\TestCase;
 use RoachPHP\Downloader\Middleware\UserAgentMiddleware;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
- * @group downloader
- * @group middleware
  *
  * @internal
  */
+    #[Group('downloader')]
+    #[Group('middleware')]
 final class UserAgentMiddlewareTest extends TestCase
 {
     use InteractsWithRequestsAndResponses;

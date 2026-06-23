@@ -27,6 +27,7 @@ use RoachPHP\Scheduling\Timing\FakeClock;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
 use RoachPHP\Testing\FakeLogger;
 use Symfony\Contracts\EventDispatcher\Event;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -40,10 +41,10 @@ final class StatsCollectorExtensionTest extends ExtensionTestCase
     private FakeClock $clock;
 
     /**
-     * @dataProvider statsScenarioProvider
      *
      * @param array{event: Event, eventName: string, stat: string} $scenario
      */
+    #[DataProvider('statsScenarioProvider')]
     public function testCountNumberOfEventOccurrence(array $scenario, int $eventCount): void
     {
         $this->extension->configure([]);
@@ -58,8 +59,8 @@ final class StatsCollectorExtensionTest extends ExtensionTestCase
     }
 
     /**
-     * @dataProvider runtimeProvider
      */
+    #[DataProvider('runtimeProvider')]
     public function testLogRuntime(int $seconds, string $expected): void
     {
         $this->extension->configure([]);

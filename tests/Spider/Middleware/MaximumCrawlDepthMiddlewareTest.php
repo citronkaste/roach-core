@@ -16,6 +16,7 @@ namespace RoachPHP\Tests\Spider\Middleware;
 use PHPUnit\Framework\TestCase;
 use RoachPHP\Spider\Middleware\MaximumCrawlDepthMiddleware;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -25,8 +26,8 @@ final class MaximumCrawlDepthMiddlewareTest extends TestCase
     use InteractsWithRequestsAndResponses;
 
     /**
-     * @dataProvider initialDepthProvider
      */
+    #[DataProvider('initialDepthProvider')]
     public function testIncrementsCrawlDepthForOutgoingRequestsBasedOnResponseCrawlDepth(int $initialDepth): void
     {
         $previousRequest = $this->makeRequest()->withMeta('depth', $initialDepth);
@@ -61,8 +62,8 @@ final class MaximumCrawlDepthMiddlewareTest extends TestCase
     }
 
     /**
-     * @dataProvider maxCrawlDepthProvider
      */
+    #[DataProvider('maxCrawlDepthProvider')]
     public function testDropRequestsAboveTheMaximumCrawlDepth(int $maxCrawlDepth): void
     {
         $previousRequest = $this
@@ -79,8 +80,8 @@ final class MaximumCrawlDepthMiddlewareTest extends TestCase
     }
 
     /**
-     * @dataProvider maxCrawlDepthProvider
      */
+    #[DataProvider('maxCrawlDepthProvider')]
     public function testAllowRequestsBelowTheMaximumCrawlDepth(int $maxCrawlDepth): void
     {
         $previousRequest = $this

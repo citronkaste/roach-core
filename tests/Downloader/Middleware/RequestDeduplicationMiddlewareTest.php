@@ -17,13 +17,14 @@ use PHPUnit\Framework\TestCase;
 use RoachPHP\Downloader\Middleware\RequestDeduplicationMiddleware;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
 use RoachPHP\Testing\FakeLogger;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
- * @group downloader
- * @group middleware
  *
  * @internal
  */
+    #[Group('downloader')]
+    #[Group('middleware')]
 final class RequestDeduplicationMiddlewareTest extends TestCase
 {
     use InteractsWithRequestsAndResponses;

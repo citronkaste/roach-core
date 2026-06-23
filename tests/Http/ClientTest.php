@@ -21,6 +21,7 @@ use RoachPHP\Http\Client;
 use RoachPHP\Http\RequestException;
 use RoachPHP\Http\Response;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -77,8 +78,8 @@ final class ClientTest extends TestCase
     }
 
     /**
-     * @dataProvider exceptionProvider
      */
+    #[DataProvider('exceptionProvider')]
     public function testCallRejectCallbackOnRequestException(string $exceptionClass, callable $makeException): void
     {
         $client = new Client($this->withMockClient([
