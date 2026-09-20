@@ -11,6 +11,12 @@ compatible dependency versions independently on PHP 8.2, 8.3, 8.4, and 8.5, usin
 both lowest and current allowed versions. PHPUnit 10 is permitted for PHP 8.2.
 Use Node 22.12+ (CI uses Node 24).
 
+All eight PHP/dependency combinations run the complete test suite and dependency
+audits. Full-project Psalm runs with current dependencies on each PHP version.
+Oldest permitted analyzer dependencies can fail during their own bootstrap on
+newer PHP runtimes, so they are not used as the static-analysis toolchain. Runtime
+compatibility coverage is retained in the lowest-version test jobs.
+
 ```bash
 composer install --no-interaction --prefer-dist
 npm ci
