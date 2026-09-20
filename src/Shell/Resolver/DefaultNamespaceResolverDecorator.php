@@ -32,6 +32,7 @@ final class DefaultNamespaceResolverDecorator implements NamespaceResolverInterf
      *
      * @return class-string<SpiderInterface>
      */
+    #[\Override()]
     public function resolveSpiderNamespace(string $spiderClass): string
     {
         $spiderClass = \trim($spiderClass);

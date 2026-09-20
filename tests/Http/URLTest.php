@@ -25,9 +25,7 @@ final class URLTest extends TestCase
 {
     public function testParseAURLFromAString(): void
     {
-        $url = URL::parse(
-            'https://username:password@sub.example.com:9000/foo/bar#anchor',
-        );
+        $url = URL::parse('https://username:password@sub.example.com:9000/foo/bar#anchor');
 
         self::assertSame('https', $url->scheme);
         self::assertSame('username', $url->username);
@@ -72,12 +70,8 @@ final class URLTest extends TestCase
 
     public function testIsEqualIfURLsAreIdentical(): void
     {
-        $url1 = URL::parse(
-            'https://username:password@sub.example.com:9000/foo/bar#anchor',
-        );
-        $url2 = URL::parse(
-            'https://username:password@sub.example.com:9000/foo/bar#anchor',
-        );
+        $url1 = URL::parse('https://username:password@sub.example.com:9000/foo/bar#anchor');
+        $url2 = URL::parse('https://username:password@sub.example.com:9000/foo/bar#anchor');
 
         self::assertTrue($url1->equals($url2));
     }
@@ -91,9 +85,9 @@ final class URLTest extends TestCase
         self::assertFalse($url1->equals($url2));
     }
 
-    public static function differentUrlsProvider(): array
+    public static function differentUrlsProvider(): iterable
     {
-        return [
+        yield from [
             'scheme' => [
                 'https://username:password@sub.example.com:9000/foo/bar#anchor',
                 'http://username:password@sub.example.com:9000/foo/bar#anchor',
@@ -131,16 +125,10 @@ final class URLTest extends TestCase
 
     public function testCompareEqualityWithStrings(): void
     {
-        $url = URL::parse(
-            'https://username:password@sub.example.com:9000/foo/bar#anchor',
-        );
+        $url = URL::parse('https://username:password@sub.example.com:9000/foo/bar#anchor');
 
-        self::assertTrue(
-            $url->equals('https://username:password@sub.example.com:9000/foo/bar#anchor'),
-        );
-        self::assertFalse(
-            $url->equals('https://username:password@example.com:9000/foo/bar#anchor'),
-        );
+        self::assertTrue($url->equals('https://username:password@sub.example.com:9000/foo/bar#anchor'));
+        self::assertFalse($url->equals('https://username:password@example.com:9000/foo/bar#anchor'));
     }
 
     public function testEqualityCheckIgnoresOrderOfQueryParameters(): void
@@ -158,14 +146,25 @@ final class URLTest extends TestCase
         self::assertSame($urlString, $url->toString());
     }
 
-    public static function urlProvider(): array
+    public static function urlProvider(): iterable
     {
-        return [
+        yield from [
             ['https://username:password@sub.example.com:9000/foo/bar?foo=bar#anchor'],
             ['https://sub.example.com:9000/foo/bar?foo=bar#anchor'],
             ['https://example.com:9000/foo/bar'],
             ['http://example.com:9000'],
             ['https://example.com:9000?foo=bar'],
+            ['https://0:0@example.com/path#0'],
+            ['https://user:@example.com/path'],
+            ['https://:password@example.com/path'],
+            ['http://example.com:80/path'],
+            ['HTTPS://EXAMPLE.COM:443/path'],
+            ['https://[::1]:9000/path?foo=bar#anchor'],
+            ['https://example.com:0/path'],
+            ['//example.com/path'],
+            ['relative/path'],
+            ['/path#0'],
+            ['mailto:user@example.com'],
         ];
     }
 }

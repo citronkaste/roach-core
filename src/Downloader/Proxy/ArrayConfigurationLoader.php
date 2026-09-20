@@ -22,6 +22,7 @@ final class ArrayConfigurationLoader implements ConfigurationLoaderInterface
     {
     }
 
+    #[\Override()]
     public function loadProxyConfiguration(): Proxy
     {
         if (\is_string($this->params)) {

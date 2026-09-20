@@ -26,6 +26,7 @@ final class FakeClient implements ClientInterface
      */
     private array $sentRequestUrls = [];
 
+    #[\Override()]
     public function pool(array $requests, ?callable $onFulfilled = null, ?callable $onRejected = null): void
     {
         foreach ($requests as $request) {

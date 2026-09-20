@@ -29,6 +29,7 @@ final class ScrapedItemCollectorExtension implements ExtensionInterface
      */
     private array $scrapedItems = [];
 
+    #[\Override()]
     public static function getSubscribedEvents(): array
     {
         return [

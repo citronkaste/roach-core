@@ -19,6 +19,7 @@ abstract class AbstractItem implements ItemInterface
 {
     use Droppable;
 
+    #[\Override()]
     final public function all(): array
     {
         $reflectionClass = new \ReflectionClass($this);
@@ -36,6 +37,7 @@ abstract class AbstractItem implements ItemInterface
         );
     }
 
+    #[\Override()]
     final public function get(string $key, mixed $default = null): mixed
     {
         $reflectionClass = new \ReflectionClass($this);
@@ -53,6 +55,7 @@ abstract class AbstractItem implements ItemInterface
         return $property->getValue($this) ?: $default;
     }
 
+    #[\Override()]
     final public function set(string $key, mixed $value): ItemInterface
     {
         $reflectionClass = new \ReflectionClass($this);
@@ -60,15 +63,11 @@ abstract class AbstractItem implements ItemInterface
         try {
             $property = $reflectionClass->getProperty($key);
         } catch (\ReflectionException) {
-            throw new \InvalidArgumentException(
-                \sprintf('No public property %s exists on class %s', $key, static::class),
-            );
+            throw new \InvalidArgumentException(\sprintf('No public property %s exists on class %s', $key, static::class));
         }
 
         if (!$property->isPublic()) {
-            throw new \InvalidArgumentException(
-                \sprintf('No public property %s exists on class %s', $key, static::class),
-            );
+            throw new \InvalidArgumentException(\sprintf('No public property %s exists on class %s', $key, static::class));
         }
 
         $property->setValue($this, $value);
@@ -76,6 +75,7 @@ abstract class AbstractItem implements ItemInterface
         return $this;
     }
 
+    #[\Override()]
     final public function has(string $key): bool
     {
         $reflectionClass = new \ReflectionClass($this);
@@ -89,11 +89,13 @@ abstract class AbstractItem implements ItemInterface
         }
     }
 
+    #[\Override()]
     final public function offsetExists(mixed $offset): bool
     {
         return $this->has($offset);
     }
 
+    #[\Override()]
     final public function offsetGet(mixed $offset): mixed
     {
         /** @psalm-suppress DocblockTypeContradiction */
@@ -105,6 +107,7 @@ abstract class AbstractItem implements ItemInterface
         return $this->get($offset);
     }
 
+    #[\Override()]
     final public function offsetSet(mixed $offset, mixed $value): void
     {
         if (!\is_string($offset)) {
@@ -114,6 +117,7 @@ abstract class AbstractItem implements ItemInterface
         $this->set($offset, $value);
     }
 
+    #[\Override()]
     final public function offsetUnset(mixed $offset): void
     {
         throw new \RuntimeException('Unsetting properties is not supported for custom item classes');

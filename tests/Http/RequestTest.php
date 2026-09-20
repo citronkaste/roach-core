@@ -15,19 +15,18 @@ namespace RoachPHP\Tests\Http;
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use RoachPHP\Http\Response;
 use RoachPHP\Spider\ParseResult;
 use RoachPHP\Support\DroppableInterface;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
 use RoachPHP\Tests\Support\DroppableTestCase;
-use PHPUnit\Framework\Attributes\Group;
 
 /**
- *
  * @internal
  */
-    #[Group('http')]
+#[Group('http')]
 final class RequestTest extends TestCase
 {
     use InteractsWithRequestsAndResponses;
@@ -42,7 +41,7 @@ final class RequestTest extends TestCase
 
     public function testCanAccessTheRequestUriPath(): void
     {
-        $request = $this->makeRequest('https://::request-uri::/::path::');
+        $request = $this->makeRequest('https://example.test/::path::');
 
         self::assertSame('/::path::', $request->getPath());
     }
@@ -83,9 +82,7 @@ final class RequestTest extends TestCase
             yield ParseResult::item(['::item::']);
         });
 
-        $request->callback(
-            new Response(new GuzzleResponse(), $request),
-        )->next();
+        $request->callback(new Response(new GuzzleResponse(), $request))->next();
 
         self::assertTrue($called);
     }
@@ -124,9 +121,7 @@ final class RequestTest extends TestCase
     {
         $request = $this->makeRequest('https://example.com/path#anchor');
 
-        self::assertTrue(
-            $request->url->equals('https://example.com/path#anchor'),
-        );
+        self::assertTrue($request->url->equals('https://example.com/path#anchor'));
     }
 
     protected function createDroppable(): DroppableInterface

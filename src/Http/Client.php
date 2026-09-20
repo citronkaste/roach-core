@@ -31,6 +31,7 @@ final class Client implements ClientInterface
     /**
      * @param list<Request> $requests
      */
+    #[\Override()]
     public function pool(
         array $requests,
         ?callable $onFulfilled = null,

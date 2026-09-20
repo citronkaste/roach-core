@@ -46,11 +46,13 @@ final class DefaultContainer implements ContainerInterface
         $this->registerDefaultBindings();
     }
 
+    #[\Override()]
     public function get(string $id)
     {
         return $this->container->get($id);
     }
 
+    #[\Override()]
     public function has(string $id): bool
     {
         return $this->container->has($id);

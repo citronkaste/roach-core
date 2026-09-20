@@ -32,11 +32,13 @@ final class ArrayRequestScheduler implements RequestSchedulerInterface
         $this->nextBatchReadyAt = $this->clock->now();
     }
 
+    #[\Override()]
     public function schedule(Request $request): void
     {
         $this->requests[] = $request;
     }
 
+    #[\Override()]
     public function empty(): bool
     {
         return empty($this->requests);
@@ -45,6 +47,7 @@ final class ArrayRequestScheduler implements RequestSchedulerInterface
     /**
      * @return array<array-key, Request>
      */
+    #[\Override()]
     public function nextRequests(int $batchSize): array
     {
         $this->clock->sleepUntil($this->nextBatchReadyAt);
@@ -54,11 +57,13 @@ final class ArrayRequestScheduler implements RequestSchedulerInterface
         return $this->getNextRequests($batchSize);
     }
 
+    #[\Override()]
     public function forceNextRequests(int $batchSize): array
     {
         return $this->getNextRequests($batchSize);
     }
 
+    #[\Override()]
     public function setDelay(int $delay): RequestSchedulerInterface
     {
         $this->delay = $delay;
@@ -66,6 +71,7 @@ final class ArrayRequestScheduler implements RequestSchedulerInterface
         return $this;
     }
 
+    #[\Override()]
     public function setNamespace(string $namespace): RequestSchedulerInterface
     {
         return $this;

@@ -38,11 +38,10 @@ final class ExecuteJavascriptMiddleware implements ResponseMiddlewareInterface
         $this->getBrowsershot = $getBrowsershot ?? static fn (string $uri): Browsershot => Browsershot::url($uri)->waitUntilNetworkIdle();
     }
 
+    #[\Override()]
     public function handleResponse(Response $response): Response
     {
-        $browsershot = $this->configureBrowsershot(
-            $response->getRequest()->getUri(),
-        );
+        $browsershot = $this->configureBrowsershot($response->getRequest()->getUri());
 
         try {
             $body = $browsershot->bodyHtml();
@@ -104,7 +103,7 @@ final class ExecuteJavascriptMiddleware implements ResponseMiddlewareInterface
         return $browsershot;
     }
 
-    private function defaultOptions(): array
+    private static function defaultOptions(): array
     {
         return [
             'chromiumArguments' => [],

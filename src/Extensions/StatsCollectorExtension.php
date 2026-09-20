@@ -52,6 +52,7 @@ final class StatsCollectorExtension implements ExtensionInterface
     ) {
     }
 
+    #[\Override()]
     public static function getSubscribedEvents(): array
     {
         return [

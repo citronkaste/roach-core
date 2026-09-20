@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased (codekj fork)
+
+### Changed
+
+* Remove the abandoned `jakeasmith/http_build_url` dependency. URL serialization
+  uses Guzzle PSR-7 component composition; request deduplication uses the request's
+  existing immutable PSR-7 URI. Guzzle PSR-7 is now an explicit dependency.
+* Preserve query strings (including repeated keys and their order), encoded
+  paths, and the original outbound request while applying deduplication options.
+* Restore full-project static analysis with explicit override attributes and
+  logger type contracts, preserving the existing logger call signatures.
+* Test PHP 8.2–8.5 with compatible PHPUnit versions and locked Puppeteer tooling.
+  Pin workflow actions, check changed-file style without automated commits, and
+  replace upstream release automation with a manually requested, verified 1.x
+  fork release workflow.
+
+### Fixed
+
+* Preserve zero-valued URL parts and empty user-info components during
+  serialization. Correct relative, scheme-relative, and opaque URI serialization.
+* Avoid false duplicate matches caused by discarding a `0` query, fragment, or
+  username.
+* Keep URL delimiter trimming compatible with PHP 8.2 when formatting on PHP 8.4+.
+* Use valid HTTP fixture URLs with current Guzzle/Browsershot validation.
+
 ## [3.2.0](https://github.com/roach-php/core/compare/v3.1.0...v3.2.0) (2024-04-04)
 
 

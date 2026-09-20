@@ -42,6 +42,7 @@ final class FakeHandler implements SpiderMiddlewareInterface
     ) {
     }
 
+    #[\Override()]
     public function handleResponse(Response $response): Response
     {
         $this->responseCalls[] = $response;
@@ -53,6 +54,7 @@ final class FakeHandler implements SpiderMiddlewareInterface
         return $response;
     }
 
+    #[\Override()]
     public function handleRequest(Request $request, Response $response): Request
     {
         $this->requestCalls[] = $request;
@@ -64,6 +66,7 @@ final class FakeHandler implements SpiderMiddlewareInterface
         return $request;
     }
 
+    #[\Override()]
     public function handleItem(ItemInterface $item, Response $response): ItemInterface
     {
         $this->itemCalls[] = $item;

@@ -46,6 +46,7 @@ final class FakeMiddleware implements DownloaderMiddlewareInterface
     ) {
     }
 
+    #[\Override()]
     public function handleRequest(Request $request): Request
     {
         $this->requestsHandled[] = $request;
@@ -57,6 +58,7 @@ final class FakeMiddleware implements DownloaderMiddlewareInterface
         return $request;
     }
 
+    #[\Override()]
     public function handleResponse(Response $response): Response
     {
         $this->responsesHandled[] = $response;

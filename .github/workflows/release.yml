@@ -1,0 +1,47 @@
+name: Release codekj/roach-core
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'New fork version, e.g. 1.1.1 (without a v prefix)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fork-release
+  cancel-in-progress: false
+
+jobs:
+  tests:
+    uses: ./.github/workflows/run-tests.yml
+  style:
+    uses: ./.github/workflows/code-style.yml
+  publish:
+    needs: [tests, style]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Publish the verified commit
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          [[ "$TAG" =~ ^1\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]] || { printf '%s\n' 'Expected a stable 1.x fork tag.' >&2; exit 1; }
+          previous=$(git describe --tags --match '1.*' --abbrev=0 "$GITHUB_SHA")
+          # Atomic creation fails if the tag already exists; never move a release tag.
+          gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" \
+            -f "ref=refs/tags/$TAG" -f "sha=$GITHUB_SHA" --silent
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --verify-tag \
+            --title "codekj/roach-core $TAG" --generate-notes --notes-start-tag "$previous"

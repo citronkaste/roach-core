@@ -14,6 +14,8 @@ EOF;
 $ruleSet =  Config\RuleSet\Php80::create()
     ->withHeader($header)
     ->withRules(Config\Rules::fromArray([
+        // Keep byte-oriented URL operations and compatibility with PHP 8.2.
+        'mb_str_functions' => false,
         'php_unit_test_class_requires_covers' => false,
         'class_attributes_separation' => [
             'elements' => [

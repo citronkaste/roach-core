@@ -25,11 +25,13 @@ final class Runner implements RunnerInterface
     ) {
     }
 
+    #[\Override()]
     public function startSpider(string $spiderClass, ?Overrides $overrides = null, array $context = []): void
     {
         $this->engine->start($this->createRun($spiderClass, $overrides, $context));
     }
 
+    #[\Override()]
     public function collectSpider(string $spiderClass, ?Overrides $overrides = null, array $context = []): array
     {
         return $this->engine->collect($this->createRun($spiderClass, $overrides, $context));

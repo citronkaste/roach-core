@@ -20,6 +20,7 @@ abstract class CustomItemProcessor implements ConditionalItemProcessor
 {
     use Configurable;
 
+    #[\Override()]
     final public function shouldHandle(ItemInterface $item): bool
     {
         return \in_array($item::class, $this->getHandledItemClasses(), true);

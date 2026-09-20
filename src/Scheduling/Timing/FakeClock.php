@@ -24,18 +24,19 @@ final class FakeClock implements ClockInterface
         $this->now = new \DateTimeImmutable();
     }
 
+    #[\Override()]
     public function now(): \DateTimeImmutable
     {
         return $this->now;
     }
 
+    #[\Override()]
     public function sleep(int $seconds): void
     {
-        $this->sleepUntil(
-            $this->now->add(new \DateInterval("PT{$seconds}S")),
-        );
+        $this->sleepUntil($this->now->add(new \DateInterval("PT{$seconds}S")));
     }
 
+    #[\Override()]
     public function sleepUntil(\DateTimeImmutable $date): void
     {
         if ($date < $this->now) {

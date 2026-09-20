@@ -28,10 +28,12 @@ final class ExecuteJavascriptMiddlewareTest extends IntegrationTestCase
 
     public function testUpdateResponseBodyWithHtmlAfterExecutingJavascript(): void
     {
-        $response = $this->makeResponse(
-            $this->makeRequest('http://localhost:8000/javascript'),
+        $response = $this->makeResponse($this->makeRequest('http://localhost:8000/javascript'));
+        $middleware = new ExecuteJavascriptMiddleware(
+            new FakeLogger(),
+            // The fixture runs inside containers/CI; this does not change production defaults.
+            static fn (string $uri): Browsershot => Browsershot::url($uri)->noSandbox()->waitUntilNetworkIdle(),
         );
-        $middleware = new ExecuteJavascriptMiddleware(new FakeLogger());
 
         $processedResponse = $middleware->handleResponse($response);
 
@@ -52,7 +54,7 @@ final class ExecuteJavascriptMiddlewareTest extends IntegrationTestCase
             static fn (string $uri): Browsershot => $throwingBrowsershot->setUrl($uri),
         );
 
-        $processedResponse = $middleware->handleResponse($this->makeResponse());
+        $processedResponse = $middleware->handleResponse($this->makeResponse($this->makeRequest('https://example.test/')));
 
         self::assertTrue($processedResponse->wasDropped());
     }
@@ -71,26 +73,22 @@ final class ExecuteJavascriptMiddlewareTest extends IntegrationTestCase
             static fn (string $uri): Browsershot => $throwingBrowsershot->setUrl($uri),
         );
 
-        $middleware->handleResponse($this->makeResponse());
+        $middleware->handleResponse($this->makeResponse($this->makeRequest('https://example.test/')));
 
-        self::assertTrue(
-            $logger->messageWasLogged(
-                'info',
-                '[ExecuteJavascriptMiddleware] Error while executing javascript',
-            ),
-        );
+        self::assertTrue($logger->messageWasLogged(
+            'info',
+            '[ExecuteJavascriptMiddleware] Error while executing javascript',
+        ), );
     }
 
     public function testUsesTheProvidedUserAgentOption(): void
     {
         $mockBrowserShot = $this->createMock(Browsershot::class);
-        $response = $this->makeResponse(
-            $this->makeRequest('http://localhost:8000/javascript'),
-        );
+        $response = $this->makeResponse($this->makeRequest('http://localhost:8000/javascript'));
         $middleware = new ExecuteJavascriptMiddleware(new FakeLogger(), static fn (string $uri): Browsershot => $mockBrowserShot);
         $middleware->configure(['userAgent' => 'custom']);
 
-        $mockBrowserShot->expects(self::once())
+        $mockBrowserShot->expects($this->once())
             ->method('userAgent')
             ->with(self::equalTo('custom'));
 

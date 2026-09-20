@@ -21,6 +21,7 @@ final class FakeNamespaceResolver implements NamespaceResolverInterface
     /**
      * @psalm-suppress LessSpecificReturnStatement, MoreSpecificReturnType
      */
+    #[\Override()]
     public function resolveSpiderNamespace(string $spiderClass): string
     {
         return $spiderClass;

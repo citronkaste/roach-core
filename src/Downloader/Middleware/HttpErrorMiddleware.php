@@ -25,6 +25,7 @@ final class HttpErrorMiddleware implements ResponseMiddlewareInterface
     {
     }
 
+    #[\Override()]
     public function handleResponse(Response $response): Response
     {
         $status = $response->getStatus();
@@ -51,7 +52,7 @@ final class HttpErrorMiddleware implements ResponseMiddlewareInterface
         return $response->drop('Unallowed HTTP status: ' . $status);
     }
 
-    private function defaultOptions(): array
+    private static function defaultOptions(): array
     {
         return [
             'handleStatus' => [],

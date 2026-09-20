@@ -24,11 +24,11 @@ final class ArrayLoader implements ConfigurationLoaderStrategy
 {
     /**
      * @var array{
-     *             startUrls: string[],
-     *             downloaderMiddleware: class-string<DownloaderMiddlewareInterface>[],
-     *             spiderMiddleware: class-string<SpiderMiddlewareInterface>[],
-     *             itemProcessors: class-string<ItemProcessorInterface>[],
-     *             extensions: class-string<ExtensionInterface>[],
+     *             startUrls: array<array-key, string>,
+     *             downloaderMiddleware: array<array-key, class-string<DownloaderMiddlewareInterface>>,
+     *             spiderMiddleware: array<array-key, class-string<SpiderMiddlewareInterface>>,
+     *             itemProcessors: array<array-key, class-string<ItemProcessorInterface>>,
+     *             extensions: array<array-key, class-string<ExtensionInterface>>,
      *             concurrency: int,
      *             requestDelay: int
      *             }
@@ -53,6 +53,7 @@ final class ArrayLoader implements ConfigurationLoaderStrategy
         $this->config = $resolver->resolve($configuration);
     }
 
+    #[\Override()]
     public function load(): Configuration
     {
         return new Configuration(

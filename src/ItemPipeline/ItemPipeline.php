@@ -30,6 +30,7 @@ final class ItemPipeline implements ItemPipelineInterface
     {
     }
 
+    #[\Override()]
     public function setProcessors(ItemProcessorInterface ...$processors): ItemPipelineInterface
     {
         $this->processors = $processors;
@@ -37,6 +38,7 @@ final class ItemPipeline implements ItemPipelineInterface
         return $this;
     }
 
+    #[\Override()]
     public function sendItem(ItemInterface $item): ItemInterface
     {
         foreach ($this->processors as $processor) {

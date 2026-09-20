@@ -24,11 +24,13 @@ final class FakeRunner implements RunnerInterface
      */
     private array $runs = [];
 
+    #[\Override()]
     public function startSpider(string $spiderClass, ?Overrides $overrides = null, array $context = []): void
     {
         $this->recordRun($spiderClass, $overrides, $context);
     }
 
+    #[\Override()]
     public function collectSpider(string $spiderClass, ?Overrides $overrides = null, array $context = []): array
     {
         $this->recordRun($spiderClass, $overrides, $context);

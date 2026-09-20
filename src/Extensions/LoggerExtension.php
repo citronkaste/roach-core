@@ -30,6 +30,7 @@ final class LoggerExtension implements ExtensionInterface
     {
     }
 
+    #[\Override()]
     public static function getSubscribedEvents(): array
     {
         return [

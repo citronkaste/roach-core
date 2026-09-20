@@ -29,11 +29,13 @@ final class RunSpiderCommand extends Command
 
     protected static string $defaultDescription = 'Start a spider run for the provided spider class';
 
+    #[\Override()]
     protected function configure(): void
     {
         $this->addArgument('spider', InputArgument::REQUIRED, 'The spider class to execute');
     }
 
+    #[\Override()]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $resolver = Roach::resolve(NamespaceResolverInterface::class);

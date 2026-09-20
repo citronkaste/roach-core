@@ -26,13 +26,14 @@ final class StaticNamespaceResolver implements NamespaceResolverInterface
      *
      * @return class-string<SpiderInterface>
      */
+    #[\Override()]
     public function resolveSpiderNamespace(string $spiderClass): string
     {
         if (!\class_exists($spiderClass)) {
             throw new InvalidSpiderException("The spider class {$spiderClass} does not exist");
         }
 
-        if (!$this->isSpider($spiderClass)) {
+        if (!self::isSpider($spiderClass)) {
             throw new InvalidSpiderException("The class {$spiderClass} is not a spider");
         }
 
@@ -45,7 +46,7 @@ final class StaticNamespaceResolver implements NamespaceResolverInterface
      *
      * @throws \ReflectionException
      */
-    private function isSpider(string $spiderClass): bool
+    private static function isSpider(string $spiderClass): bool
     {
         return (new \ReflectionClass($spiderClass))->implementsInterface(SpiderInterface::class);
     }

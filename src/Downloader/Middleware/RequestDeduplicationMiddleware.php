@@ -30,27 +30,26 @@ final class RequestDeduplicationMiddleware implements RequestMiddlewareInterface
     {
     }
 
+    #[\Override()]
     public function handleRequest(Request $request): Request
     {
-        $uri = $request->getUri();
-        $replaceFlags = \HTTP_URL_REPLACE;
-        $parts = \parse_url($uri);
+        $uri = $request->getPsrRequest()->getUri();
 
         if ($this->option('ignore_url_fragments')) {
-            $replaceFlags |= \HTTP_URL_STRIP_FRAGMENT;
+            $uri = $uri->withFragment('');
         }
 
-        if ($this->option('ignore_trailing_slashes') && isset($parts['path'])) {
-            $parts['path'] = \rtrim($parts['path'], '/');
+        if ($this->option('ignore_trailing_slashes')) {
+            $uri = $uri->withPath(\rtrim($uri->getPath(), '/'));
         }
 
         if ($this->option('ignore_query_string')) {
-            $replaceFlags |= \HTTP_URL_STRIP_QUERY;
+            $uri = $uri->withQuery('');
         }
 
-        $uri = http_build_url($uri, $parts, $replaceFlags);
+        $normalizedUri = (string) $uri;
 
-        if (\in_array($uri, $this->seenUris, true)) {
+        if (\in_array($normalizedUri, $this->seenUris, true)) {
             $this->logger->info(
                 '[RequestDeduplicationMiddleware] Dropping duplicate request',
                 ['uri' => $request->getUri()],
@@ -59,12 +58,12 @@ final class RequestDeduplicationMiddleware implements RequestMiddlewareInterface
             return $request->drop('Duplicate request');
         }
 
-        $this->seenUris[] = $uri;
+        $this->seenUris[] = $normalizedUri;
 
         return $request;
     }
 
-    private function defaultOptions(): array
+    private static function defaultOptions(): array
     {
         return [
             'ignore_url_fragments' => false,

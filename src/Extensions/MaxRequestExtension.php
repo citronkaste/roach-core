@@ -23,6 +23,7 @@ final class MaxRequestExtension implements ExtensionInterface
 
     private int $sentRequests = 0;
 
+    #[\Override()]
     public static function getSubscribedEvents(): array
     {
         return [
@@ -52,7 +53,7 @@ final class MaxRequestExtension implements ExtensionInterface
         }
     }
 
-    private function defaultOptions(): array
+    private static function defaultOptions(): array
     {
         return [
             'limit' => 10,

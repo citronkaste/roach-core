@@ -21,6 +21,7 @@ final class MaximumCrawlDepthMiddleware implements RequestMiddlewareInterface
 {
     use Configurable;
 
+    #[\Override()]
     public function handleRequest(Request $request, Response $response): Request
     {
         $currentDepth = (int) $response->getRequest()->getMeta('depth', 1);
@@ -33,7 +34,7 @@ final class MaximumCrawlDepthMiddleware implements RequestMiddlewareInterface
         return $request->withMeta('depth', $currentDepth + 1);
     }
 
-    private function defaultOptions(): array
+    private static function defaultOptions(): array
     {
         return [
             'maxCrawlDepth' => 10,

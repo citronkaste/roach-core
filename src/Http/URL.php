@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace RoachPHP\Http;
 
+use GuzzleHttp\Psr7\Uri;
+
 final class URL
 {
     public function __construct(
@@ -33,7 +35,7 @@ final class URL
     public static function parse(string $url): self
     {
         /**
-         * @var false|array{
+         * @var array{
          *     host?: string,
          *     user?: string,
          *     pass?: string,
@@ -42,7 +44,7 @@ final class URL
          *     path?: string,
          *     query?: string,
          *     fragment?: string,
-         * } $parts
+         * }|false $parts
          */
         $parts = \parse_url($url);
 
@@ -64,18 +66,29 @@ final class URL
 
     public function toString(): string
     {
-        $parts = [
-            'scheme' => $this->scheme,
-            'host' => $this->host,
-            'port' => $this->port,
-            'user' => $this->username,
-            'pass' => $this->password,
-            'path' => $this->path,
-            'query' => $this->query->toString(),
-            'fragment' => $this->fragment,
-        ];
+        $authority = $this->host ?? '';
 
-        return http_build_url(\array_filter($parts));
+        if (null !== $this->port) {
+            $authority .= ':' . $this->port;
+        }
+
+        if (null !== $this->username) {
+            $userInfo = $this->username;
+
+            if (null !== $this->password) {
+                $userInfo .= ':' . $this->password;
+            }
+
+            $authority = $userInfo . '@' . $authority;
+        }
+
+        return Uri::composeComponents(
+            $this->scheme,
+            $authority,
+            $this->path ?? '',
+            $this->query->toString(),
+            $this->fragment,
+        );
     }
 
     /**

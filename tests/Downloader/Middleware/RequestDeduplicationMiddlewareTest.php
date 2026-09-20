@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace RoachPHP\Tests\Downloader\Middleware;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use RoachPHP\Downloader\Middleware\RequestDeduplicationMiddleware;
 use RoachPHP\Testing\Concerns\InteractsWithRequestsAndResponses;
 use RoachPHP\Testing\FakeLogger;
-use PHPUnit\Framework\Attributes\Group;
 
 /**
- *
  * @internal
  */
-    #[Group('downloader')]
-    #[Group('middleware')]
+#[Group('downloader')]
+#[Group('middleware')]
 final class RequestDeduplicationMiddlewareTest extends TestCase
 {
     use InteractsWithRequestsAndResponses;
@@ -72,13 +72,11 @@ final class RequestDeduplicationMiddlewareTest extends TestCase
         $this->middleware->handleRequest($request);
         $this->middleware->handleRequest($request);
 
-        self::assertTrue(
-            $this->logger->messageWasLogged(
-                'info',
-                '[RequestDeduplicationMiddleware] Dropping duplicate request',
-                ['uri' => 'https://example.com'],
-            ),
-        );
+        self::assertTrue($this->logger->messageWasLogged(
+            'info',
+            '[RequestDeduplicationMiddleware] Dropping duplicate request',
+            ['uri' => 'https://example.com'],
+        ), );
     }
 
     public function testIgnoresTrailingSlashesByDefaultWhenComparingUrls(): void
@@ -168,5 +166,41 @@ final class RequestDeduplicationMiddlewareTest extends TestCase
         $requestB = $this->middleware->handleRequest($requestB);
 
         self::assertTrue($requestB->wasDropped());
+    }
+
+    #[DataProvider('distinctUrlsProvider')]
+    public function testPreservesDistinctRequestTargets(string $first, string $second): void
+    {
+        $this->middleware->configure([]);
+
+        self::assertFalse($this->middleware->handleRequest($this->makeRequest($first))->wasDropped());
+        self::assertFalse($this->middleware->handleRequest($this->makeRequest($second))->wasDropped());
+    }
+
+    public static function distinctUrlsProvider(): iterable
+    {
+        yield from [
+            'zero query' => ['https://example.com/path', 'https://example.com/path?0'],
+            'zero fragment' => ['https://example.com/path', 'https://example.com/path#0'],
+            'repeated query keys' => ['https://example.com?a=1&a=2', 'https://example.com?a=2'],
+            'query order' => ['https://example.com?a=1&b=2', 'https://example.com?b=2&a=1'],
+            'encoded slash' => ['https://example.com/a%2Fb', 'https://example.com/a/b'],
+            'zero username' => ['https://example.com/path', 'https://0@example.com/path'],
+        ];
+    }
+
+    public function testCombinesOptionsWithoutChangingTheRequestSentToTheServer(): void
+    {
+        $uri = 'https://example.com/path///?a=1&a=2&flag=0#0';
+        $request = $this->makeRequest($uri);
+        $this->middleware->configure([
+            'ignore_url_fragments' => true,
+            'ignore_trailing_slashes' => true,
+            'ignore_query_string' => true,
+        ]);
+
+        self::assertSame($request, $this->middleware->handleRequest($request));
+        self::assertSame($uri, $request->getUri());
+        self::assertTrue($this->middleware->handleRequest($this->makeRequest('https://example.com/path'))->wasDropped());
     }
 }

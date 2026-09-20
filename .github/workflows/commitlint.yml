@@ -1,11 +1,15 @@
 name: Lint Commit Messages
 on: [pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   commitlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
-      - uses: wagoid/commitlint-github-action@v5
+          persist-credentials: false
+      - uses: wagoid/commitlint-github-action@e399437c83a8cc31c2760f7698154fd084061743 # v5

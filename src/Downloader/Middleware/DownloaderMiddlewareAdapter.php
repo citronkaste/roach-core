@@ -22,14 +22,12 @@ use RoachPHP\Http\Response;
  */
 final class DownloaderMiddlewareAdapter implements DownloaderMiddlewareInterface
 {
-    private function __construct(
-        private RequestMiddlewareInterface|ResponseMiddlewareInterface $middleware,
-    ) {
+    private function __construct(private RequestMiddlewareInterface|ResponseMiddlewareInterface $middleware)
+    {
     }
 
-    public static function fromMiddleware(
-        RequestMiddlewareInterface|ResponseMiddlewareInterface $middleware,
-    ): DownloaderMiddlewareInterface {
+    public static function fromMiddleware(RequestMiddlewareInterface|ResponseMiddlewareInterface $middleware): DownloaderMiddlewareInterface
+    {
         if ($middleware instanceof DownloaderMiddlewareInterface) {
             return $middleware;
         }
@@ -37,6 +35,7 @@ final class DownloaderMiddlewareAdapter implements DownloaderMiddlewareInterface
         return new self($middleware);
     }
 
+    #[\Override()]
     public function handleRequest(Request $request): Request
     {
         if ($this->middleware instanceof RequestMiddlewareInterface) {
@@ -46,6 +45,7 @@ final class DownloaderMiddlewareAdapter implements DownloaderMiddlewareInterface
         return $request;
     }
 
+    #[\Override()]
     public function handleResponse(Response $response): Response
     {
         if ($this->middleware instanceof ResponseMiddlewareInterface) {
@@ -55,6 +55,7 @@ final class DownloaderMiddlewareAdapter implements DownloaderMiddlewareInterface
         return $response;
     }
 
+    #[\Override()]
     public function configure(array $options): void
     {
         $this->middleware->configure($options);

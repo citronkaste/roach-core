@@ -23,14 +23,12 @@ use RoachPHP\Spider\SpiderMiddlewareInterface;
  */
 final class SpiderMiddlewareAdapter implements SpiderMiddlewareInterface
 {
-    private function __construct(
-        private ItemMiddlewareInterface|RequestMiddlewareInterface|ResponseMiddlewareInterface $middleware,
-    ) {
+    private function __construct(private ItemMiddlewareInterface|RequestMiddlewareInterface|ResponseMiddlewareInterface $middleware)
+    {
     }
 
-    public static function fromMiddleware(
-        ItemMiddlewareInterface|RequestMiddlewareInterface|ResponseMiddlewareInterface $middleware,
-    ): SpiderMiddlewareInterface {
+    public static function fromMiddleware(ItemMiddlewareInterface|RequestMiddlewareInterface|ResponseMiddlewareInterface $middleware): SpiderMiddlewareInterface
+    {
         if ($middleware instanceof SpiderMiddlewareInterface) {
             return $middleware;
         }
@@ -38,6 +36,7 @@ final class SpiderMiddlewareAdapter implements SpiderMiddlewareInterface
         return new self($middleware);
     }
 
+    #[\Override()]
     public function handleItem(ItemInterface $item, Response $response): ItemInterface
     {
         if ($this->middleware instanceof ItemMiddlewareInterface) {
@@ -47,6 +46,7 @@ final class SpiderMiddlewareAdapter implements SpiderMiddlewareInterface
         return $item;
     }
 
+    #[\Override()]
     public function handleRequest(Request $request, Response $response): Request
     {
         if ($this->middleware instanceof RequestMiddlewareInterface) {
@@ -56,6 +56,7 @@ final class SpiderMiddlewareAdapter implements SpiderMiddlewareInterface
         return $request;
     }
 
+    #[\Override()]
     public function handleResponse(Response $response): Response
     {
         if ($this->middleware instanceof ResponseMiddlewareInterface) {
@@ -65,6 +66,7 @@ final class SpiderMiddlewareAdapter implements SpiderMiddlewareInterface
         return $response;
     }
 
+    #[\Override()]
     public function configure(array $options): void
     {
         $this->middleware->configure($options);

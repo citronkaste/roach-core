@@ -28,11 +28,13 @@ final class FetchCommand extends Command
 {
     protected static string $defaultName = 'fetch';
 
+    #[\Override()]
     protected function configure(): void
     {
         $this->addArgument('url', InputArgument::REQUIRED);
     }
 
+    #[\Override()]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $client = new Client();
@@ -49,8 +51,7 @@ final class FetchCommand extends Command
             $request,
         );
 
-        $output->writeln(
-            <<<TEXT
+        $output->writeln(<<<TEXT
 <info>
 Available variables:
     \$response:      <{$response->getStatus()} '{$url}'>
@@ -58,8 +59,7 @@ Available variables:
 Commands:
     fetch <url>     Fetch URL and update the \$response and \$html objects
 </info>
-TEXT
-        );
+TEXT);
 
         /** @var Shell $app */
         $app = $this->getApplication();

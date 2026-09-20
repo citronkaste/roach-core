@@ -26,6 +26,7 @@ final class RobotsTxtMiddleware implements RequestMiddlewareInterface
      */
     private array $robots = [];
 
+    #[\Override()]
     public function handleRequest(Request $request): Request
     {
         /** @var string $userAgent */
@@ -48,7 +49,9 @@ final class RobotsTxtMiddleware implements RequestMiddlewareInterface
 
     private function createRobotsUrl(string $url): string
     {
-        $robotsUrl = \parse_url($url, \PHP_URL_SCHEME) . '://' . \parse_url($url, \PHP_URL_HOST);
+        $scheme = (string) \parse_url($url, \PHP_URL_SCHEME);
+        $host = (string) \parse_url($url, \PHP_URL_HOST);
+        $robotsUrl = $scheme . '://' . $host;
 
         $port = \parse_url($url, \PHP_URL_PORT);
 
@@ -59,7 +62,7 @@ final class RobotsTxtMiddleware implements RequestMiddlewareInterface
         return "{$robotsUrl}/{$this->option('fileName')}";
     }
 
-    private function defaultOptions(): array
+    private static function defaultOptions(): array
     {
         return [
             'fileName' => 'robots.txt',

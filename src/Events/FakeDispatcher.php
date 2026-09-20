@@ -23,6 +23,7 @@ final class FakeDispatcher extends EventDispatcher
      */
     private array $dispatchedEvents = [];
 
+    #[\Override()]
     public function dispatch(object $event, ?string $eventName = null): object
     {
         $eventName ??= $event::class;

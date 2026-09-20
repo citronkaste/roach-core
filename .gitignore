@@ -3,6 +3,4 @@
 .phpunit.result.cache
 .phpunit.cache/
 /coverage/
-/package-lock.json
-/package.json
 /node_modules

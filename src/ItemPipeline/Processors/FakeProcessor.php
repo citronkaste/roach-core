@@ -23,6 +23,7 @@ final class FakeProcessor implements ItemProcessorInterface
 
     private array $calls = [];
 
+    #[\Override()]
     public function processItem(ItemInterface $item): ItemInterface
     {
         $this->calls[] = $item->all();

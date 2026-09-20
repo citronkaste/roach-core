@@ -37,21 +37,25 @@ abstract class AbstractSpider implements SpiderInterface
     /**
      * @return array<array-key, Request>
      */
+    #[\Override()]
     final public function getInitialRequests(): array
     {
         return $this->initialRequests();
     }
 
+    #[\Override()]
     final public function withConfiguration(Configuration $configuration): void
     {
         $this->configuration = $configuration;
     }
 
+    #[\Override()]
     final public function withContext(array $context): void
     {
         $this->context = $context;
     }
 
+    #[\Override()]
     final public function loadConfiguration(): Configuration
     {
         return $this->configuration;

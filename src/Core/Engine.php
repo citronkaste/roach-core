@@ -42,6 +42,7 @@ final class Engine implements EngineInterface
     /**
      * @return array<int, ItemInterface>
      */
+    #[\Override()]
     public function collect(Run $run): array
     {
         $extension = new ScrapedItemCollectorExtension();
@@ -52,6 +53,7 @@ final class Engine implements EngineInterface
         return $extension->getScrapedItems();
     }
 
+    #[\Override()]
     public function start(Run $run): void
     {
         $this->configure($run);
@@ -100,9 +102,7 @@ final class Engine implements EngineInterface
                 $scheduledRequests = $this->downloader->scheduledRequests();
             }
 
-            $this->downloader->flush(
-                fn (Response $response) => $this->onFulfilled($response),
-            );
+            $this->downloader->flush(fn (Response $response) => $this->onFulfilled($response));
         }
 
         $this->eventDispatcher->dispatch(

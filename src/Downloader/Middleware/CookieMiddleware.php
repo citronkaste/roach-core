@@ -29,6 +29,7 @@ final class CookieMiddleware implements RequestMiddlewareInterface
         $this->cookieJar = $cookieJar ?: new CookieJar();
     }
 
+    #[\Override()]
     public function handleRequest(Request $request): Request
     {
         return $request->addOption('cookies', $this->cookieJar);

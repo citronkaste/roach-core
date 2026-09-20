@@ -23,16 +23,19 @@ final class Item implements ItemInterface
     {
     }
 
+    #[\Override()]
     public function all(): array
     {
         return $this->data;
     }
 
+    #[\Override()]
     public function get(string $key, mixed $default = null): mixed
     {
         return $this->data[$key] ?? $default;
     }
 
+    #[\Override()]
     public function set(string $key, mixed $value): ItemInterface
     {
         $this->data[$key] = $value;
@@ -40,28 +43,33 @@ final class Item implements ItemInterface
         return $this;
     }
 
+    #[\Override()]
     public function has(string $key): bool
     {
         return isset($this->data[$key]);
     }
 
+    #[\Override()]
     public function offsetExists(mixed $offset): bool
     {
         return isset($this->data[$offset]);
     }
 
+    #[\Override()]
     public function offsetGet(mixed $offset): mixed
     {
         /** @psalm-suppress MixedReturnStatement */
         return $this->data[$offset];
     }
 
+    #[\Override()]
     public function offsetSet(mixed $offset, mixed $value): void
     {
         /** @psalm-suppress PossiblyNullArrayOffset */
         $this->data[$offset] = $value;
     }
 
+    #[\Override()]
     public function offsetUnset(mixed $offset): void
     {
         unset($this->data[$offset]);

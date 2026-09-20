@@ -33,12 +33,14 @@ final class Repl extends Command
 
     protected static string $defaultDescription = 'Launch an interactive roach shell';
 
+    #[\Override()]
     protected function configure(): void
     {
         $this
             ->addArgument('url', InputArgument::REQUIRED, 'The URL to fetch');
     }
 
+    #[\Override()]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $input->setOption('ansi', true);
